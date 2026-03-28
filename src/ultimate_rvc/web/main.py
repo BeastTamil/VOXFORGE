@@ -12,10 +12,6 @@ import typer
 
 from ultimate_rvc.common import AUDIO_DIR, MODELS_DIR, TEMP_DIR
 from ultimate_rvc.core.generate.speech import get_edge_tts_voice_names
-from ultimate_rvc.core.manage.audio import (
-    get_saved_output_audio,
-    get_saved_speech_audio,
-)
 from ultimate_rvc.core.manage.config import get_config_names, load_config
 from ultimate_rvc.core.manage.models import (
     get_custom_embedder_model_names,
@@ -63,8 +59,6 @@ def render_app() -> gr.Blocks:
             total_config.speech.multi_step.edge_tts_voice,
             total_config.speech.multi_step.voice_model,
             total_config.speech.multi_step.custom_embedder_model,
-            total_config.management.audio.speech,
-            total_config.management.audio.output,
             total_config.management.model.voices,
             total_config.management.model.embedders,
             total_config.management.settings.load_config_name,
@@ -93,8 +87,6 @@ def render_app() -> gr.Blocks:
                 total_config.speech.one_click.custom_embedder_model.instance,
                 total_config.speech.multi_step.custom_embedder_model.instance,
                 total_config.management.model.embedders.instance,
-                total_config.management.audio.speech.instance,
-                total_config.management.audio.output.instance,
                 total_config.management.settings.load_config_name.instance,
                 total_config.management.settings.delete_config_names.instance,
             ],
@@ -121,15 +113,11 @@ def _init_dropdowns() -> list[gr.Dropdown]:
         3,
         value_indices=range(2),
     )
-    speech_delete = gr.Dropdown(get_saved_speech_audio())
-    output_delete = gr.Dropdown(get_saved_output_audio())
     configs = initialize_dropdowns(get_config_names, 2, value_indices=range(1))
     return [
         *edge_tts_models,
         *voice_models,
         *custom_embedder_models,
-        speech_delete,
-        output_delete,
         *configs,
     ]
 
