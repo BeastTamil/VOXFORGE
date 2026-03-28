@@ -96,24 +96,47 @@ def render_app() -> gr.Blocks:
 
 
 def _init_dropdowns() -> list[gr.Dropdown]:
-    """Initialize dropdowns on page load."""
-    edge_tts_models = initialize_dropdowns(
-        get_edge_tts_voice_names,
-        2,
-        "en-US-ChristopherNeural",
-        range(2),
-    )
-    voice_models = initialize_dropdowns(
-        get_voice_model_names,
-        3,
-        value_indices=range(2),
-    )
-    custom_embedder_models = initialize_dropdowns(
-        get_custom_embedder_model_names,
-        3,
-        value_indices=range(2),
-    )
-    configs = initialize_dropdowns(get_config_names, 2, value_indices=range(1))
+    """
+    Initialize all dropdowns on page load.
+
+    Each section is wrapped independently so that a failure in one
+    (e.g. Edge TTS 503) does not prevent the others from populating.
+    """
+    try:
+        edge_tts_models = initialize_dropdowns(
+            get_edge_tts_voice_names,
+            2,
+            "en-US-ChristopherNeural",
+            range(2),
+        )
+    except Exception:
+        edge_tts_models = [gr.Dropdown(choices=[], value=None) for _ in range(2)]
+
+    try:
+        voice_models = initialize_dropdowns(
+            get_voice_model_names,
+            3,
+            value_indices=range(2),
+        )
+    except Exception:
+        voice_models = [gr.Dropdown(choices=[], value=None) for _ in range(3)]
+
+    try:
+        custom_embedder_models = initialize_dropdowns(
+            get_custom_embedder_model_names,
+            3,
+            value_indices=range(2),
+        )
+    except Exception:
+        custom_embedder_models = [
+            gr.Dropdown(choices=[], value=None) for _ in range(3)
+        ]
+
+    try:
+        configs = initialize_dropdowns(get_config_names, 2, value_indices=range(1))
+    except Exception:
+        configs = [gr.Dropdown(choices=[], value=None) for _ in range(2)]
+
     return [
         *edge_tts_models,
         *voice_models,
