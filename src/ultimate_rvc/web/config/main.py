@@ -720,7 +720,7 @@ class TotalConfig(BaseModel):
             component_configs: list[Any] = []
             for _, value in model:
                 if isinstance(value, ComponentConfig):
-                    if not value.exclude_value:
+                    if not value.exclude_value and value._instance is not None:
                         component_configs.append(value)
                 elif isinstance(value, BaseModel):
                     component_configs.extend(_collect(value))
