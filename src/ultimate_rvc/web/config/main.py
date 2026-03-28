@@ -7,7 +7,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from functools import cached_property
 
 from pydantic import BaseModel
 
@@ -700,7 +699,7 @@ class TotalConfig(BaseModel):
     training: TotalTrainingConfig = TotalTrainingConfig()
     management: TotalManagementConfig = TotalManagementConfig()
 
-    @cached_property
+    @property
     def all(self) -> list[AnyComponentConfig]:
         """
         Recursively collect those component configuration models nested
