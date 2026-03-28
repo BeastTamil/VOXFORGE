@@ -49,7 +49,11 @@ def _render_config_files_tab(
     tab_config: SettingsManagementConfig,
     total_config: TotalConfig,
 ) -> None:
-    components = [config.instance for config in total_config.all]
+    components = [
+        config.instance
+        for config in total_config.all
+        if config._instance is not None and hasattr(config._instance, "_id")
+    ]
     with gr.Tab("Configuration files"):
         with gr.Accordion("Save configuration"), gr.Row():
             with gr.Column():

@@ -42,7 +42,7 @@ def render(total_config: TotalConfig) -> None:
 
     *_, all_model_update = [
         click_event.success(
-            partial(update_dropdowns, get_voice_model_names, 3, [], [2]),
+            partial(update_dropdowns, get_voice_model_names, 3, [], [0, 1, 2]),
             outputs=[
                 total_config.speech.one_click.voice_model.instance,
                 total_config.speech.multi_step.voice_model.instance,
