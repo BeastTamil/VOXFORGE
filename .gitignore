@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Runtime dirs
+models/voice/*/
+audio/
+logs/
+temp/
+!models/voice/.gitkeep
+!audio/.gitkeep
+!logs/.gitkeep
+!temp/.gitkeep
+
+# Env
+.env
+*.local
