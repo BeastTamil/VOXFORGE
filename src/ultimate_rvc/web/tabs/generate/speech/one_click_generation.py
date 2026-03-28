@@ -12,10 +12,6 @@ from functools import partial
 import gradio as gr
 
 from ultimate_rvc.core.generate.speech import get_mixed_speech_track_name, run_pipeline
-from ultimate_rvc.core.manage.audio import (
-    get_saved_output_audio,
-    get_saved_speech_audio,
-)
 from ultimate_rvc.typing_extra import EmbedderModel
 from ultimate_rvc.web.common import (
     PROGRESS_BAR,
@@ -23,7 +19,6 @@ from ultimate_rvc.web.common import (
     toggle_intermediate_audio,
     toggle_visibility,
     toggle_visible_component,
-    update_dropdowns,
     update_output_name,
     update_value,
 )
@@ -100,14 +95,6 @@ def render(total_config: TotalConfig) -> None:
             outputs=[mixed_speech, *tab_config.intermediate_audio.all],
             concurrency_limit=1,
             concurrency_id=ConcurrencyId.GPU,
-        ).success(
-            partial(update_dropdowns, get_saved_speech_audio, 1),
-            outputs=total_config.management.audio.speech.instance,
-            show_progress="hidden",
-        ).then(
-            partial(update_dropdowns, get_saved_output_audio, 1),
-            outputs=total_config.management.audio.output.instance,
-            show_progress="hidden",
         )
         reset_btn.click(
             lambda: [

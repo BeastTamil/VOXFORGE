@@ -18,10 +18,6 @@ from ultimate_rvc.core.generate.speech import (
     mix_speech,
     run_edge_tts,
 )
-from ultimate_rvc.core.manage.audio import (
-    get_saved_output_audio,
-    get_saved_speech_audio,
-)
 from ultimate_rvc.typing_extra import EmbedderModel, RVCContentType
 from ultimate_rvc.web.common import (
     exception_harness,
@@ -29,7 +25,6 @@ from ultimate_rvc.web.common import (
     setup_transfer_event,
     toggle_visibility,
     toggle_visible_component,
-    update_dropdowns,
     update_output_name,
     update_value,
 )
@@ -132,10 +127,6 @@ def _render_step_1(total_config: TotalConfig) -> None:
                 tab_config.tts_volume_change.instance,
             ],
             outputs=speech_track_output,
-        ).then(
-            partial(update_dropdowns, get_saved_speech_audio, 1, [], [0]),
-            outputs=total_config.management.audio.speech.instance,
-            show_progress="hidden",
         )
         setup_transfer_event(
             tts_transfer_btn,
@@ -289,10 +280,6 @@ def _render_step_2(total_config: TotalConfig) -> None:
             outputs=converted_speech_track_output,
             concurrency_id=ConcurrencyId.GPU,
             concurrency_limit=1,
-        ).then(
-            partial(update_dropdowns, get_saved_speech_audio, 1, [], [0]),
-            outputs=total_config.management.audio.speech.instance,
-            show_progress="hidden",
         )
         setup_transfer_event(
             converted_speech_transfer_btn,
@@ -361,10 +348,6 @@ def _render_step_3(total_config: TotalConfig) -> None:
                 tab_config.output_name.instance,
             ],
             outputs=mixed_speech_track_output,
-        ).then(
-            partial(update_dropdowns, get_saved_output_audio, 1, [], [0]),
-            outputs=total_config.management.audio.output.instance,
-            show_progress="hidden",
         )
         setup_transfer_event(
             mix_speech_transfer_btn,
